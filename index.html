@@ -22,12 +22,13 @@
       flex-direction: column;
     }
 
+    /* Yläpalkki */
     header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 15px 30px;
-      background-color: rgba(0, 0, 0, 0.6);
+      padding: 10px 30px;
+      background-color: rgba(0,0,0,0.6);
       color: white;
       font-weight: bold;
       position: fixed;
@@ -41,6 +42,12 @@
       text-decoration: none;
     }
 
+    .stock-widget {
+      display: flex;
+      align-items: center;
+    }
+
+    /* Hero-osio */
     .hero {
       flex: 1;
       display: flex;
@@ -50,6 +57,7 @@
       text-align: center;
       color: white;
       padding: 0 20px;
+      margin-top: 70px; /* tilaa headerille */
     }
 
     .hero h1 {
@@ -65,19 +73,21 @@
     }
 
     .hero .contact-btn {
-      background-color: #1e90ff;
+      background-color: #444; /* tumman hohtava väri */
       color: white;
       padding: 12px 25px;
       border-radius: 5px;
       text-decoration: none;
       font-weight: bold;
       font-size: 1rem;
+      box-shadow: 0 0 15px rgba(255,255,255,0.2);
     }
 
     .hero .contact-btn:hover {
-      background-color: #0d6efd;
+      background-color: #222;
     }
 
+    /* Alapalkki / lomake */
     footer {
       background-color: rgba(0, 0, 0, 0.6);
       padding: 30px 20px;
@@ -97,7 +107,7 @@
       border-radius: 5px;
       border: none;
       font-size: 0.9rem;
-      background-color: rgba(0, 0, 0, 0.5);
+      background-color: rgba(50,50,50,0.7); /* läpinäkyvä tumma */
       color: white;
     }
 
@@ -107,17 +117,18 @@
     }
 
     footer form button {
-      background-color: #1e90ff;
+      background-color: #444; /* tumman hohtava väri */
       color: white;
       border: none;
       padding: 10px 20px;
       border-radius: 5px;
       cursor: pointer;
       font-size: 0.9rem;
+      box-shadow: 0 0 15px rgba(255,255,255,0.2);
     }
 
     footer form button:hover {
-      background-color: #0d6efd;
+      background-color: #222;
     }
 
     @media(max-width: 600px){
@@ -141,8 +152,29 @@
     <div class="contacts">
       <a href="mailto:viitanen@viininvest.com">Connect</a>
     </div>
-    <div class="stock-info">
-      <span id="stock-price">OMXTGI: Lataus...</span>
+    <div class="stock-widget">
+      <!-- TradingView Widget -->
+      <div class="tradingview-widget-container" style="height:30px;">
+        <div id="tradingview_f0a1b"></div>
+        <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+        <script type="text/javascript">
+          new TradingView.widget({
+            "container_id": "tradingview_f0a1b",
+            "width": 300,
+            "height": 30,
+            "symbol": "NASDAQOMX:OMXTGI",
+            "interval": "D",
+            "timezone": "Europe/Tallinn",
+            "theme": "dark",
+            "style": "1",
+            "locale": "fi",
+            "toolbar_bg": "#1e1e1e",
+            "enable_publishing": false,
+            "hide_top_toolbar": true,
+            "hide_legend": true
+          });
+        </script>
+      </div>
     </div>
   </header>
 
@@ -163,25 +195,6 @@
       </form>
     </div>
   </footer>
-
-  <script>
-    // Hae Tallinnan pörssin yleinen indeksi (OMXTGI)
-    async function fetchStockData() {
-      try {
-        const response = await fetch('https://api.investing.com/api/financialdata/OMXTGI');
-        const data = await response.json();
-        const price = data.price;
-        document.getElementById('stock-price').textContent = `OMXTGI: ${price}`;
-      } catch (error) {
-        console.error('Virhe haettaessa pörssitietoja:', error);
-        document.getElementById('stock-price').textContent = 'OMXTGI: Virhe';
-      }
-    }
-
-    // Päivitä pörssitiedot 30 sekunnin välein
-    setInterval(fetchStockData, 30000);
-    fetchStockData(); // Hae tiedot heti sivun latauksen jälkeen
-  </script>
 
 </body>
 </html>
